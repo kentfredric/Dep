@@ -54,7 +54,6 @@ sub item(&) {
     local $IN_ITEM = 1;
     local $item    = {};
     $code->();
-    print Dumper($item);
     Dep->new( %{$item} );
 }
 
