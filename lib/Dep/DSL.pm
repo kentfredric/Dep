@@ -3,6 +3,8 @@ use warnings;
 
 package Dep::DSL;
 
+sub _clean_eval { eval $_[0] };
+
 use Carp qw( croak );
 use Dep;
 
@@ -40,7 +42,7 @@ sub requires(@) {
     }
     $item->{requires} ||= {};
     if ( @items == 1 ) {
-        $item->{requires}->{$items[0]} = 0;
+        $item->{requires}->{ $items[0] } = 0;
         return;
     }
     my (%items) = @items;
@@ -60,6 +62,7 @@ sub item(&) {
     local $item    = {};
     $code->();
     Dep->new( %{$item} );
+    1;
 }
 
 sub read_file {
@@ -67,8 +70,21 @@ sub read_file {
     if ($IN_READ) {
         croak "read_file illegal inside read_file";
     }
+    my $content = do {
+        open my $fh, '<', $file or die "Can't open $file for read, $!";
+        local $/;
+        <$fh>;
+    };
+    my $code     = "";
+    my $filename = $file;
+    $filename =~ s/\n//g;
+    $filename =~ s/"/\"/g;
+    $code .= sprintf "#file \"%s\"\n#line 1 \"%s\"\n", $filename, $filename;
+    $code .= $content;
     local $IN_READ = 1;
-    do $file >= 1 or die "Error sourcing $file";
+    local $@;
+    _clean_eval($code);
+    die "Error sourcing $file: $@" if $@;
 }
 
 1;
