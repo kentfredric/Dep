@@ -33,12 +33,17 @@ sub provides(%) {
     }
 }
 
-sub requires(%) {
-    my (%items) = @_;
+sub requires(@) {
+    my (@items) = @_;
     if ( not $IN_ITEM ) {
         croak "requires illegal outside item";
     }
     $item->{requires} ||= {};
+    if ( @items == 1 ) {
+        $item->{requires}->{$items[0]} = 0;
+        return;
+    }
+    my (%items) = @items;
     for my $key ( keys %items ) {
         $item->{requires}->{$key} = $items{$key};
     }
