@@ -7,6 +7,7 @@ use Dep;
 
 sub as_dot {
     my (@out) = 'digraph a {';
+    push @out, q[rankdir=LR];
     for my $name ( Dep->get_distnames ) {
         my $dep = Dep->get_dist($name);
         for my $module ( sort keys %{ $dep->requires } ) {
