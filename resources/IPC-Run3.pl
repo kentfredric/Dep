@@ -4,7 +4,7 @@ item {
     requires 'Time::HiRes';
 };
 item {
-    name 'RBS/IPC-Run3-0.035.tar.gz';
+    name 'RJBS/IPC-Run3-0.035.tar.gz';
     provides 'IPC::Run3' => '0.035';
     requires 'Time::HiRes';
     requires 'Test::More';
