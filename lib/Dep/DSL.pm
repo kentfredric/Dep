@@ -92,4 +92,14 @@ sub read_file {
     die "Error sourcing $file: $@" if $@;
 }
 
+sub read_tree {
+    my ($root) = @_;
+    opendir my $fh, $root or die "Cant opendir $root: $!";
+    while ( my $leaf = readdir $fh ) {
+        next if -d $leaf;
+        my $full = "$root/$leaf";
+        read_file($full);
+    }
+}
+
 1;
