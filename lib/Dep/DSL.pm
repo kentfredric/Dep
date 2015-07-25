@@ -45,7 +45,14 @@ sub requires($;$) {
     $item->{requires}->{$module} = $version;
 }
 
-use Data::Dumper qw( Dumper );
+sub perl($) {
+    my ($version) = @_;
+    if ( not $IN_READ ) {
+        croak "perl illegal outside of read_file";
+    }
+    $item->{perl} ||= {};
+    $item->{perl}->{$version} = 1;
+}
 
 sub item(&) {
     my ($code) = @_;
