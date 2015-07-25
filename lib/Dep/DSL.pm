@@ -3,7 +3,7 @@ use warnings;
 
 package Dep::DSL;
 
-sub _clean_eval { eval $_[0] };
+sub _clean_eval { eval $_[0] }
 
 use Carp qw( croak );
 use Dep;
@@ -35,20 +35,14 @@ sub provides(%) {
     }
 }
 
-sub requires(@) {
-    my (@items) = @_;
+sub requires($;$) {
+    my ( $module, $version ) = @_;
     if ( not $IN_ITEM ) {
         croak "requires illegal outside item";
     }
     $item->{requires} ||= {};
-    if ( @items == 1 ) {
-        $item->{requires}->{ $items[0] } = 0;
-        return;
-    }
-    my (%items) = @items;
-    for my $key ( keys %items ) {
-        $item->{requires}->{$key} = $items{$key};
-    }
+    $version = '0' unless defined $version;
+    $item->{requires}->{$module} = $version;
 }
 
 use Data::Dumper qw( Dumper );
