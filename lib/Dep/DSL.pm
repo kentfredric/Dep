@@ -62,6 +62,10 @@ sub item(&) {
     local $IN_ITEM = 1;
     local $item    = {};
     $code->();
+    if ( not $item->{perl} ) {
+        $item->{perl} = { '5.006001' => 1, '5.006002' => 1 };
+    }
+    return 1 unless exists $item->{perl}->{$]};
     Dep->new( %{$item} );
     1;
 }
