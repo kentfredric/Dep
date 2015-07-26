@@ -4,6 +4,7 @@ use warnings;
 package Dep::Module;
 
 use Dep::Version;
+use Carp qw( croak );
 
 sub new {
     my ( $self, @args ) = @_;
@@ -15,6 +16,7 @@ sub new {
 
 sub register {
     my ( $self, $version, $dep ) = @_;
+    croak "version must be defined" unless defined $version;
     $self->{versions}->{$version} = $dep;
 }
 
