@@ -34,7 +34,7 @@ sub fast_numify {
 sub fast_vpp {
     my ($version) = @_;
     my ( $major, $minor ) = split /\./, fast_numify($version);
-    my $padlength = int( length($minor) / 3 ) + 1 * 3;
+    my $padlength = ( int( ( length($minor) - 1 ) / 3 ) + 1 ) * 3;
     my $needchars = $padlength - length($minor);
     return $major . q[.] . $minor . ( '0' x $needchars ) . q[ (] . $version . ')';
 }
