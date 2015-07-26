@@ -4,3 +4,11 @@ item {
     provides 'Filter::Util::Call' => '1.04';
     provides 'Filter::Util::Exec' => '1.01';
 };
+
+item {
+    name 'RURBAN/Filter-1.55.tar.gz';
+    provides 'Filter::Util::Call' => '1.55';
+    provides 'Filter::Util::Exec' => '1.55';
+
+    requires 'Test::More';
+};
