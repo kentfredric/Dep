@@ -23,14 +23,10 @@ sub new {
 sub name     { $_[0]->{name} }
 sub requires { $_[0]->{requires} }
 
-sub provides {
-    ref $_[0]->{provides} eq 'HASH'
-      ? %{ $_[0]->{provides} }
-      : @{ $_[0]->{provides} };
-}
+sub provides { $_[0]->{provides} }
 
 sub _register_provides {
-    my (@provides) = $_[0]->provides;
+    my (@provides) = %{ $_[0]->provides };
     while (@provides) {
         my ( $module, $version ) = splice @provides, 0, 2, ();
         $DEP_CACHE->{$module} = Dep::Module->new( name => $module ) unless exists $DEP_CACHE->{$module};
